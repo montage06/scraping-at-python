@@ -1,0 +1,18 @@
+import requests
+from bs4 import BeautifulSoup
+
+url = 'website url'
+res = requests.get(url)
+
+soup = BeautifulSoup(res.text, 'html.parser')
+
+#2nd 'td'
+summary = soup.find_all('td', attrs={'style': 'text-align : justify'})[1]
+# If you want to see all html, use　code below
+# print(soup.prettify())
+
+summary.text
+
+# export to textfile
+with open('anyfilename.txt', 'w') as f:
+  print(summary.text, file=f)
