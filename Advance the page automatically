@@ -1,0 +1,52 @@
+import pandas as pd
+from time import sleep
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+
+driver = webdriver.Chrome('/Users/glicia/python/chromedriver')
+url = 'url'
+driver.get(url)
+
+btn_1 = driver.find_element_by_id('')
+btn_1.click()
+sleep(3)
+
+btn_2 = driver.find_element_by_css_selector('')
+btn_2.click()
+# downloadviewまで開く
+elems = driver.find_element_by_css_selector('')
+
+#空リストを作成
+elem_list = []
+
+#tagで要素を抜き出す
+tr_tag = driver.find_elements_by_tag_name('tr')
+
+#最終ページ数の出力
+last_page = driver.find_element_by_css_selector('')
+last_page = int(last_page.text.split(' ')[1])
+
+#送りボタン
+btn_3 = driver.find_element_by_css_selector('')
+
+#最終ページ分までfor文でループする 
+for i in range (last_page):
+    for element in tr_tag:
+        grid_list = element.text.splitlines()
+        elem_list.append(grid_list)
+        
+    #最終ページまで行ったら処理を止める    
+    if i == last_page - 1:
+        break
+    else:
+        btn_3.click()
+        sleep(2)
+        tr_tag = driver.find_elements_by_tag_name('tr')
+        
+ #リストをデータフレームに入れる
+df = pd.DataFrame(elem_list, columns=['A', 'B', 'C', 'D', 'E'])
+
+#データフレームをcsvで出力
+df.to_csv('data.csv', index=False)
+
+driver.quit()
