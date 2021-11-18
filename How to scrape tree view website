@@ -40,3 +40,34 @@ while pls_num > 0:
         
     elif pls_num == len((plus_btn)):
         break
+
+
+
+# make text and make lists
+dis = driver.find_elements_by_xpath('G')
+dst =dis[1:] # skip first list
+
+dis_list = []
+ID_list = []
+
+for des in dst:
+    Dis_name = des.text.split('[')[0]
+    ID = des.text.split('[')[1]
+    
+    ID_mt = ID.maketrans({
+        ' ': '',
+        ']': '',
+    })
+    ID_transe = ID.translate(ID_mt)
+
+    dis_list.append(Dis_name)
+    ID_list.append(ID_transe)
+    
+lists = list(zip(dis_list,ID_list))
+
+# make csv
+df = pd.DataFrame(lists, columns=['Dis_name', 'ID'])
+
+df.to_csv('name.csv', index=False)
+
+driver.quit()
