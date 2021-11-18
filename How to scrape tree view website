@@ -1,0 +1,42 @@
+import pandas as pd
+from selenium import webdriver
+from time import sleep
+from webdriver_manager.chrome import ChromeDriverManager
+ 
+driver = webdriver.Chrome('/Users/glicia/python/chromedriver')
+url = 'url'
+driver.get(url)
+sleep(4)
+
+elem = driver.find_element_by_css_selector('A')
+
+elem = elem.find_element_by_css_selector('B') #push button to expand underlayer elements
+
+elem.click()
+sleep(3)
+elem = driver.find_element_by_css_selector('C') #push button to expand underlayer elements
+
+elem = elem.find_elements_by_css_selector('D')[1] #push button to expand underlayer elements
+
+elem.click()
+sleep(1)
+elems = driver.find_element_by_css_selector('E') # determination range
+
+plus_btn = elems.find_elements_by_css_selector('F') #push button to expand underlayer elements
+
+pls_num = len((plus_btn))
+
+while pls_num > 0:
+    for elem in plus_btn:
+        try:
+            elem.click()  
+            sleep(0.3)
+        except:
+            pass
+    plus_btn = elems.find_elements_by_css_selector('F')
+    
+    if pls_num < len((plus_btn)):
+        pls_num = len((plus_btn))
+        
+    elif pls_num == len((plus_btn)):
+        break
