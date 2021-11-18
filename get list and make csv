@@ -1,0 +1,38 @@
+import pandas as pd
+from selenium import webdriver
+from time import sleep
+from webdriver_manager.chrome import ChromeDriverManager
+ 
+driver = webdriver.Chrome('/Users/glicia/python/chromedriver')
+url = 'url'
+driver.get(url)
+sleep(4)
+
+elem = driver.find_element_by_xpath('A').click()
+dis = driver.find_elements_by_xpath('B')
+
+dst =dis[1:]
+
+dis_list = []
+ID_list = []
+
+for des in dst:
+    Dis_name = des.text.split('[')[0]
+    ID = des.text.split('[')[1]
+    
+    ID_mt = ID.maketrans({
+        ' ': '',
+        ']': '',
+    })
+    ID_transe = ID.translate(ID_mt)
+
+    dis_list.append(Dis_name)
+    ID_list.append(ID_transe)
+
+
+lists = list(zip(dis_list,ID_list))
+
+df = pd.DataFrame(lists, columns=['Disease_name', 'ID'])
+
+df.to_csv('Disease_list.csv', index=False)
+driver.quit()
